@@ -1,46 +1,45 @@
 import { Injectable } from '@nestjs/common';
-import { CreateDogInput } from './dto/create-dog.input';
-import { UpdateDogInput } from './dto/update-dog.input';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { CreateUserInput, UpdateUserInput } from 'src/types/graphql';
 
 @Injectable()
-export class DogService {
+export class UserService {
   constructor(private prisma: PrismaService) {}
-  create({ name, ownerId }: CreateDogInput) {
-    return this.prisma.dog.create({
+  create({ name, email }: CreateUserInput) {
+    return this.prisma.user.create({
       data: {
         name,
-        ownerId,
+        email,
       },
     });
   }
 
   findAll() {
-    return this.prisma.dog.findMany();
+    return this.prisma.user.findMany();
   }
 
   findOne(id: number) {
-    return this.prisma.dog.findUnique({
+    return this.prisma.user.findUnique({
       where: {
         id,
       },
     });
   }
 
-  update(id: number, { name, ownerId }: UpdateDogInput) {
-    return this.prisma.dog.update({
+  update(id: number, { email, name }: UpdateUserInput) {
+    return this.prisma.user.update({
       where: {
         id,
       },
       data: {
+        email,
         name,
-        ownerId,
       },
     });
   }
 
   remove(id: number) {
-    return this.prisma.dog.delete({
+    return this.prisma.user.delete({
       where: {
         id,
       },

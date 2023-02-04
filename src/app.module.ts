@@ -4,9 +4,8 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
 import { PrismaService } from './prisma/prisma.service';
 import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
-import { DogModule } from './dog/dog.module';
 import { PrismaModule } from './prisma/prisma.module';
-import { OwnerModule } from './owner/owner.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -15,12 +14,14 @@ import { OwnerModule } from './owner/owner.module';
       debug: process.env.NODE_ENV !== 'production',
       playground: false,
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
-      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
-      sortSchema: true,
+      typePaths: ['./**/*.graphql'],
+      definitions: {
+        path: join(process.cwd(), 'src/types/graphql.ts'),
+        outputAs: 'class',
+      },
     }),
     PrismaModule,
-    DogModule,
-    OwnerModule,
+    UserModule,
   ],
   providers: [PrismaService],
 })

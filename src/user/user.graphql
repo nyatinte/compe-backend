@@ -1,0 +1,33 @@
+type User {
+  id: Int!
+  name: String!
+  email: String!
+}
+
+input CreateUserInput {
+  "名前"
+  name: String!
+  "メールアドレス"
+  email: String!
+}
+
+input UpdateUserInput {
+  id: Int!
+  "名前"
+  name: String
+  "メールアドレス"
+  email: String
+}
+
+type Query {
+  "ユーザー一覧"
+  users: [User]!
+  "ユーザー"
+  user(id: Int!): User
+}
+
+type Mutation {
+  createUser(createUserInput: CreateUserInput!): User!
+  updateUser(updateUserInput: UpdateUserInput!): User!
+  removeUser(id: Int!): User
+}
