@@ -12,7 +12,10 @@ describe('UserService', () => {
     service = module.get<UserService>(UserService);
   });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
+  it('create() should create a new user', async () => {
+    const input = { name: 'Test User', email: 'test@test.com' };
+    const user = await service.create(input);
+    expect(user.name).toBe(input.name);
+    expect(user.email).toBe(input.email);
   });
 });

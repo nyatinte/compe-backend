@@ -13,7 +13,10 @@ describe('UserResolver', () => {
     resolver = module.get<UserResolver>(UserResolver);
   });
 
-  it('should be defined', () => {
-    expect(resolver).toBeDefined();
+  it('create() should create a new user', async () => {
+    const input = { name: 'Test User', email: 'test@test.com' };
+    const user = await resolver.create(input);
+    expect(user.name).toBe(input.name);
+    expect(user.email).toBe(input.email);
   });
 });

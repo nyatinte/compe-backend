@@ -21,10 +21,7 @@ import { DateTimeResolver } from 'graphql-scalars';
         outputAs: 'class',
       },
       resolvers: { DateTime: DateTimeResolver },
-      context: ({ req }) => {
-        console.log('req', req);
-        return { req };
-      },
+      context: ({ req }) => ({ req }),
     }),
     PrismaModule,
     UserModule,
