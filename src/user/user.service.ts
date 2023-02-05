@@ -14,11 +14,21 @@ export class UserService {
     });
   }
 
+  createById(id: string, { name, email }: CreateUserInput) {
+    return this.prisma.user.create({
+      data: {
+        id,
+        name,
+        email,
+      },
+    });
+  }
+
   findAll() {
     return this.prisma.user.findMany();
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     return this.prisma.user.findUnique({
       where: {
         id,
@@ -26,7 +36,7 @@ export class UserService {
     });
   }
 
-  update(id: number, { email, name }: UpdateUserInput) {
+  update(id: string, { email, name }: UpdateUserInput) {
     return this.prisma.user.update({
       where: {
         id,
@@ -38,7 +48,7 @@ export class UserService {
     });
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return this.prisma.user.delete({
       where: {
         id,

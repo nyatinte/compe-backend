@@ -11,13 +11,21 @@ export class UserResolver {
     return this.userService.create(createUserInput);
   }
 
-  @Query('user')
+  @Mutation('createUserById')
+  createById(
+    @Args('id') id: string,
+    @Args('createUserInput') createUserInput: CreateUserInput,
+  ) {
+    return this.userService.createById(id, createUserInput);
+  }
+
+  @Query('users')
   findAll() {
     return this.userService.findAll();
   }
 
   @Query('user')
-  findOne(@Args('id') id: number) {
+  findOne(@Args('id') id: string) {
     return this.userService.findOne(id);
   }
 
@@ -27,7 +35,7 @@ export class UserResolver {
   }
 
   @Mutation('removeUser')
-  remove(@Args('id') id: number) {
+  remove(@Args('id') id: string) {
     return this.userService.remove(id);
   }
 }

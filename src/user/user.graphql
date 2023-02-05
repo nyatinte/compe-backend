@@ -1,33 +1,81 @@
+scalar DateTime
+
 type User {
-  id: Int!
+  """
+  ID
+  """
+  id: ID!
+  """
+  名前
+  """
   name: String!
+  """
+  メールアドレス
+  """
   email: String!
+  """
+  プロフィール画像URL
+  """
+  image: String
 }
 
 input CreateUserInput {
-  "名前"
+  """
+  名前
+  """
   name: String!
-  "メールアドレス"
+  """
+  メールアドレス
+  """
   email: String!
+  """
+  プロフィール画像URL
+  """
+  image: String
 }
 
 input UpdateUserInput {
-  id: Int!
-  "名前"
+  id: ID!
+  """
+  名前
+  """
   name: String
-  "メールアドレス"
+  """
+  メールアドレス
+  """
   email: String
+  """
+  プロフィール画像URL
+  """
+  image: String
 }
 
 type Query {
-  "ユーザー一覧"
+  """
+  ユーザー一覧
+  """
   users: [User]!
-  "ユーザー"
-  user(id: Int!): User
+  """
+  ユーザー
+  """
+  user(id: ID!): User
 }
 
 type Mutation {
+  """
+  ユーザー作成
+  """
   createUser(createUserInput: CreateUserInput!): User!
+  """
+  IDを指定してユーザーを作成
+  """
+  createUserById(id: ID!, createUserInput: CreateUserInput!): User!
+  """
+  ユーザー更新
+  """
   updateUser(updateUserInput: UpdateUserInput!): User!
-  removeUser(id: Int!): User
+  """
+  ユーザー削除
+  """
+  removeUser(id: ID!): User
 }

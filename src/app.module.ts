@@ -6,6 +6,7 @@ import { PrismaService } from './prisma/prisma.service';
 import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
 import { PrismaModule } from './prisma/prisma.module';
 import { UserModule } from './user/user.module';
+import { DateTimeResolver } from 'graphql-scalars';
 
 @Module({
   imports: [
@@ -18,6 +19,11 @@ import { UserModule } from './user/user.module';
       definitions: {
         path: join(process.cwd(), 'src/types/graphql.ts'),
         outputAs: 'class',
+      },
+      resolvers: { DateTime: DateTimeResolver },
+      context: ({ req }) => {
+        console.log('req', req);
+        return { req };
       },
     }),
     PrismaModule,
