@@ -5,21 +5,19 @@ import { CreateUserInput, UpdateUserInput } from 'src/types/graphql';
 @Injectable()
 export class UserService {
   constructor(private prisma: PrismaService) {}
-  create({ name, email }: CreateUserInput) {
+  create(input: CreateUserInput) {
     return this.prisma.user.create({
       data: {
-        name,
-        email,
+        ...input,
       },
     });
   }
 
-  createById(id: string, { name, email }: CreateUserInput) {
+  createById(id: string, input: CreateUserInput) {
     return this.prisma.user.create({
       data: {
         id,
-        name,
-        email,
+        ...input,
       },
     });
   }
@@ -36,14 +34,13 @@ export class UserService {
     });
   }
 
-  update(id: string, { email, name }: UpdateUserInput) {
+  update(id: string, input: UpdateUserInput) {
     return this.prisma.user.update({
       where: {
         id,
       },
       data: {
-        email,
-        name,
+        ...input,
       },
     });
   }
