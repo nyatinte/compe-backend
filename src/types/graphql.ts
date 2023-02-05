@@ -15,7 +15,6 @@ export class CreateUserInput {
 }
 
 export class UpdateUserInput {
-    id: string;
     name?: Nullable<string>;
     email?: Nullable<string>;
     image?: Nullable<string>;
@@ -26,6 +25,8 @@ export class User {
     name: string;
     email: string;
     image?: Nullable<string>;
+    createdAt: DateTime;
+    updatedAt: DateTime;
 }
 
 export abstract class IQuery {

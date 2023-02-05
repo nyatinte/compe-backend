@@ -17,6 +17,14 @@ type User {
   プロフィール画像URL
   """
   image: String
+  """
+  作成日時
+  """
+  createdAt: DateTime!
+  """
+  更新日時
+  """
+  updatedAt: DateTime!
 }
 
 input CreateUserInput {
@@ -35,7 +43,6 @@ input CreateUserInput {
 }
 
 input UpdateUserInput {
-  id: ID!
   """
   名前
   """
