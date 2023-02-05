@@ -73,7 +73,7 @@ type Mutation {
   """
   ユーザー更新
   """
-  updateUser(updateUserInput: UpdateUserInput!): User!
+  updateUser(id: ID!, updateUserInput: UpdateUserInput!): User!
   """
   ユーザー削除
   """
