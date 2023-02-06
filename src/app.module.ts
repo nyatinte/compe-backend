@@ -9,6 +9,7 @@ import { UserModule } from './user/user.module';
 import { DateTimeResolver } from 'graphql-scalars';
 import { CompetitionModule } from './competition/competition.module';
 import { Raw, Request } from '@node-libraries/nest-apollo-server';
+import { decode } from 'next-auth/jwt';
 
 @Module({
   imports: [
@@ -24,17 +25,24 @@ import { Raw, Request } from '@node-libraries/nest-apollo-server';
       },
       resolvers: { DateTime: DateTimeResolver },
       context: async ({ req }: { req: Request }) => {
-        const r = Raw(req);
-        const uid = r.headers['authorization'];
-        const prismaService = new PrismaService();
-        const user = await prismaService.user.findUnique({
-          where: {
-            id: uid,
-          },
-        });
-        console.log('user', user);
-
-        return { user };
+        try {
+          const r = Raw(req);
+          const token = r.headers['authorization'];
+          const decodedToken = await decode({
+            token: token.replace('Bearer ', ''),
+            secret: process.env.NEXTAUTH_SECRET,
+          });
+          const prismaService = new PrismaService();
+          const user = await prismaService.user.findUnique({
+            where: {
+              id: decodedToken.sub,
+            },
+          });
+          return { user };
+        } catch {
+          console.error('ユーザーが認証されていません');
+          return {};
+        }
       },
     }),
     PrismaModule,
