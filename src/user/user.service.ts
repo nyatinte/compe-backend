@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { CreateUserInput, UpdateUserInput } from 'src/types/graphql';
+import { Injectable } from '@nestjs/common'
+import { PrismaService } from 'src/prisma/prisma.service'
+import { CreateUserInput, UpdateUserInput } from 'src/types/graphql'
 
 @Injectable()
 export class UserService {
@@ -10,7 +10,7 @@ export class UserService {
       data: {
         ...input,
       },
-    });
+    })
   }
 
   createById(id: string, input: CreateUserInput) {
@@ -19,11 +19,11 @@ export class UserService {
         id,
         ...input,
       },
-    });
+    })
   }
 
   findAll() {
-    return this.prisma.user.findMany();
+    return this.prisma.user.findMany()
   }
 
   findOne(id: string) {
@@ -31,7 +31,7 @@ export class UserService {
       where: {
         id,
       },
-    });
+    })
   }
 
   update(id: string, input: UpdateUserInput) {
@@ -42,7 +42,7 @@ export class UserService {
       data: {
         ...input,
       },
-    });
+    })
   }
 
   remove(id: string) {
@@ -50,6 +50,6 @@ export class UserService {
       where: {
         id,
       },
-    });
+    })
   }
 }

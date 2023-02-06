@@ -6,13 +6,9 @@ import {
   Context,
   GqlContextType,
   ResolveField,
-} from '@nestjs/graphql';
-import { CompetitionService } from './competition.service';
-import {
-  CreateCompetitionInput,
-  UpdateCompetitionInput,
-  User,
-} from 'src/types/graphql';
+} from '@nestjs/graphql'
+import { CompetitionService } from './competition.service'
+import { CreateCompetitionInput, UpdateCompetitionInput, User } from 'src/types/graphql'
 
 @Resolver('Competition')
 export class CompetitionResolver {
@@ -24,17 +20,17 @@ export class CompetitionResolver {
     createCompetitionInput: CreateCompetitionInput,
     @Context() ctx: User,
   ) {
-    return this.competitionService.create(createCompetitionInput, ctx);
+    return this.competitionService.create(createCompetitionInput, ctx)
   }
 
   @Query('competition')
   findAll() {
-    return this.competitionService.findAll();
+    return this.competitionService.findAll()
   }
 
   @Query('competition')
   findOne(@Args('id') id: number) {
-    return this.competitionService.findOne(id);
+    return this.competitionService.findOne(id)
   }
 
   @Mutation('updateCompetition')
@@ -43,19 +39,19 @@ export class CompetitionResolver {
     @Args('updateCompetitionInput')
     updateCompetitionInput: UpdateCompetitionInput,
   ) {
-    return this.competitionService.update(id, updateCompetitionInput);
+    return this.competitionService.update(id, updateCompetitionInput)
   }
 
   @Mutation('removeCompetition')
   remove(@Args('id') id: number) {
-    return this.competitionService.remove(id);
+    return this.competitionService.remove(id)
   }
 
   @ResolveField('isOpen', () => Boolean)
   async isOpen(@Args('id') id: number) {
-    const competition = await this.competitionService.findOne(id);
-    const { startDate, endDate } = competition;
-    const now = new Date();
-    return startDate <= now && now <= endDate;
+    const competition = await this.competitionService.findOne(id)
+    const { startDate, endDate } = competition
+    const now = new Date()
+    return startDate <= now && now <= endDate
   }
 }

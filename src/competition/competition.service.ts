@@ -1,10 +1,6 @@
-import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
-import {
-  CreateCompetitionInput,
-  UpdateCompetitionInput,
-  User,
-} from 'src/types/graphql';
+import { Injectable } from '@nestjs/common'
+import { PrismaService } from 'src/prisma/prisma.service'
+import { CreateCompetitionInput, UpdateCompetitionInput, User } from 'src/types/graphql'
 
 @Injectable()
 export class CompetitionService {
@@ -26,7 +22,7 @@ export class CompetitionService {
         users: true,
         owner: true,
       },
-    });
+    })
   }
 
   findAll() {
@@ -35,7 +31,7 @@ export class CompetitionService {
         users: true,
         owner: true,
       },
-    });
+    })
   }
 
   findOne(id: number) {
@@ -43,7 +39,7 @@ export class CompetitionService {
       where: {
         id,
       },
-    });
+    })
   }
 
   update(id: number, updateCompetitionInput: UpdateCompetitionInput) {
@@ -54,7 +50,7 @@ export class CompetitionService {
       data: {
         ...updateCompetitionInput,
       },
-    });
+    })
   }
 
   remove(id: number) {
@@ -62,6 +58,6 @@ export class CompetitionService {
       where: {
         id,
       },
-    });
+    })
   }
 }
