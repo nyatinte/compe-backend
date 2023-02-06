@@ -40,7 +40,6 @@ import { decode } from 'next-auth/jwt'
           })
           return { user }
         } catch {
-          console.error('ユーザーが認証されていません')
           return {}
         }
       },
