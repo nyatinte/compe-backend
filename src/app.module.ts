@@ -7,6 +7,8 @@ import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
 import { PrismaModule } from './prisma/prisma.module';
 import { UserModule } from './user/user.module';
 import { DateTimeResolver } from 'graphql-scalars';
+import { CompetitionModule } from './competition/competition.module';
+import { Raw, Request } from '@node-libraries/nest-apollo-server';
 
 @Module({
   imports: [
@@ -21,10 +23,23 @@ import { DateTimeResolver } from 'graphql-scalars';
         outputAs: 'class',
       },
       resolvers: { DateTime: DateTimeResolver },
-      context: ({ req }) => ({ req }),
+      context: async ({ req }: { req: Request }) => {
+        const r = Raw(req);
+        const uid = r.headers['authorization'];
+        const prismaService = new PrismaService();
+        const user = await prismaService.user.findUnique({
+          where: {
+            id: uid,
+          },
+        });
+        console.log('user', user);
+
+        return { user };
+      },
     }),
     PrismaModule,
     UserModule,
+    CompetitionModule,
   ],
   providers: [PrismaService],
 })

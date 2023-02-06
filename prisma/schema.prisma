@@ -19,17 +19,36 @@ model User {
   updatedAt DateTime @updatedAt
 
   competitions Competition[] @relation("CompetitionUser")
+  submits Submit[]
+  ownerCompetition Competition[]
 }
 
 model Competition {
   id          Int      @id @default(autoincrement())
   title       String
   description String
-  image       String
+  image       String?
   startDate   DateTime
   endDate     DateTime
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
+  owner User @relation(fields: [ownerId], references: [id])
+  ownerId String
   users User[] @relation("CompetitionUser")
+  submits Submit[]
+}
+
+model Submit {
+  id          Int      @id @default(autoincrement())
+  source      String?
+  score       Float
+  note        String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  competition Competition @relation(fields: [competitionId], references: [id])
+  competitionId Int
+  author User @relation(fields: [authorId], references: [id])
+  authorId String
 }

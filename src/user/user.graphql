@@ -25,6 +25,7 @@ type User {
   更新日時
   """
   updatedAt: DateTime!
+  OK: Boolean!
 }
 
 input CreateUserInput {

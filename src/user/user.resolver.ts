@@ -1,6 +1,14 @@
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql';
 import { UserService } from './user.service';
-import { CreateUserInput, UpdateUserInput } from 'src/types/graphql';
+import { CreateUserInput, UpdateUserInput, User } from 'src/types/graphql';
+import { Source } from 'graphql';
 
 @Resolver('User')
 export class UserResolver {
@@ -40,5 +48,11 @@ export class UserResolver {
   @Mutation('removeUser')
   remove(@Args('id') id: string) {
     return this.userService.remove(id);
+  }
+
+  @ResolveField('OK', () => Boolean)
+  async OK(@Parent() user: User) {
+    const { name, email } = user;
+    return Boolean(name && email);
   }
 }

@@ -1,0 +1,121 @@
+scalar DateTime
+scalar Date
+type Competition {
+  """
+  コンペID
+  """
+  id: Int!
+  """
+  タイトル
+  """
+  title: String!
+  """
+  説明
+  """
+  description: String!
+  """
+  画像
+  """
+  image: String
+  """
+  開始日
+  """
+  startDate: DateTime!
+  """
+  終了日
+  """
+  endDate: DateTime!
+  """
+  公開中かどうか
+  """
+  isOpen: Boolean!
+  """
+  作成日
+  """
+  createdAt: DateTime!
+  """
+  オーナー
+  """
+  owner: User!
+  """
+  更新日
+  """
+  updatedAt: DateTime!
+}
+
+input CreateCompetitionInput {
+  """
+  タイトル
+  """
+  title: String!
+  """
+  説明
+  """
+  description: String!
+  """
+  画像
+  """
+  image: String
+  """
+  開始日
+  """
+  startDate: DateTime!
+  """
+  終了日
+  """
+  endDate: DateTime!
+}
+
+input UpdateCompetitionInput {
+  """
+  タイトル
+  """
+  title: String
+  """
+  説明
+  """
+  description: String
+  """
+  画像
+  """
+  image: String
+  """
+  開始日
+  """
+  startDate: DateTime
+  """
+  終了日
+  """
+  endDate: DateTime
+}
+
+type Query {
+  """
+  コンペ一覧
+  """
+  competitions: [Competition]!
+  """
+  コンペ詳細
+  """
+  competition(id: Int!): Competition
+}
+
+type Mutation {
+  """
+  コンペ作成
+  """
+  createCompetition(
+    createCompetitionInput: CreateCompetitionInput!
+  ): Competition!
+  """
+  コンペ更新
+  """
+  updateCompetition(
+    id: Int!
+    updateCompetitionInput: UpdateCompetitionInput!
+  ): Competition!
+  """
+  コンペ削除
+  """
+  removeCompetition(id: Int!): Competition
+}
