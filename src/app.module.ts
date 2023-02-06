@@ -6,10 +6,11 @@ import { PrismaService } from './prisma/prisma.service'
 import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core'
 import { PrismaModule } from './prisma/prisma.module'
 import { UserModule } from './user/user.module'
-import { DateTimeResolver, EmailAddressResolver, URLResolver } from 'graphql-scalars'
+import { DateResolver, DateTimeResolver, EmailAddressResolver, URLResolver } from 'graphql-scalars'
 import { CompetitionModule } from './competition/competition.module'
 import { Raw, Request } from '@node-libraries/nest-apollo-server'
 import { decode } from 'next-auth/jwt'
+import prisma from './client/prisma'
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { decode } from 'next-auth/jwt'
         outputAs: 'class',
       },
       resolvers: {
+        Date: DateResolver,
         DateTime: DateTimeResolver,
         EmailAddress: EmailAddressResolver,
         URL: URLResolver,
@@ -36,8 +38,8 @@ import { decode } from 'next-auth/jwt'
             token: token.replace('Bearer ', ''),
             secret: process.env.NEXTAUTH_SECRET,
           })
-          const prismaService = new PrismaService()
-          const user = await prismaService.user.findUnique({
+
+          const user = await prisma.user.findUnique({
             where: {
               id: decodedToken.sub,
             },

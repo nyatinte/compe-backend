@@ -22,6 +22,7 @@ export class UpdateCompetitionInput {
     image?: Nullable<URL>;
     startDate?: Nullable<Date>;
     endDate?: Nullable<Date>;
+    participantsId?: Nullable<Nullable<string>[]>;
 }
 
 export class CreateUserInput {
@@ -44,8 +45,10 @@ export class Competition {
     startDate: Date;
     endDate: Date;
     isOpen: boolean;
-    createdAt: DateTime;
     owner: User;
+    ownerId?: Nullable<string>;
+    participants: Nullable<User>[];
+    createdAt: DateTime;
     updatedAt: DateTime;
 }
 
@@ -65,6 +68,8 @@ export abstract class IMutation {
     abstract updateCompetition(id: number, updateCompetitionInput: UpdateCompetitionInput): Competition | Promise<Competition>;
 
     abstract removeCompetition(id: number): Nullable<Competition> | Promise<Nullable<Competition>>;
+
+    abstract addParticipant(id: number, userId: string): Nullable<Competition> | Promise<Nullable<Competition>>;
 
     abstract createUser(createUserInput: CreateUserInput): User | Promise<User>;
 

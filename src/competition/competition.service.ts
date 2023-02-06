@@ -5,22 +5,27 @@ import { CreateCompetitionInput, UpdateCompetitionInput, User } from 'src/types/
 @Injectable()
 export class CompetitionService {
   constructor(private prisma: PrismaService) {}
-  create(createCompetitionInput: CreateCompetitionInput, ctx: User) {
+  create(createCompetitionInput: CreateCompetitionInput, user: User) {
     return this.prisma.competition.create({
       data: {
         ...createCompetitionInput,
         owner: {
           connect: {
-            id: ctx.id,
+            id: user.id,
           },
         },
-        users: {
-          connect: [{ id: ctx.id }],
+        participants: {
+          connect: [
+            {
+              id: user.id,
+            },
+          ],
         },
       },
       include: {
-        users: true,
+        participants: true,
         owner: true,
+        submits: true,
       },
     })
   }
@@ -28,8 +33,9 @@ export class CompetitionService {
   findAll() {
     return this.prisma.competition.findMany({
       include: {
-        users: true,
+        participants: true,
         owner: true,
+        submits: true,
       },
     })
   }
@@ -38,6 +44,11 @@ export class CompetitionService {
     return this.prisma.competition.findUnique({
       where: {
         id,
+      },
+      include: {
+        participants: true,
+        owner: true,
+        submits: true,
       },
     })
   }
@@ -50,13 +61,48 @@ export class CompetitionService {
       data: {
         ...updateCompetitionInput,
       },
+      include: {
+        participants: true,
+        owner: true,
+        submits: true,
+      },
     })
   }
 
-  remove(id: number) {
+  async remove(id: number, user: User) {
+    const competition = await this.prisma.competition.findUnique({
+      where: {
+        id,
+      },
+    })
+    if (competition.ownerId !== user.id) {
+      throw new Error('オーナー以外は削除できません')
+    }
     return this.prisma.competition.delete({
       where: {
         id,
+      },
+    })
+  }
+
+  addParticipant(id: number, userId: string) {
+    return this.prisma.competition.update({
+      where: {
+        id,
+      },
+      data: {
+        participants: {
+          connect: [
+            {
+              id: userId,
+            },
+          ],
+        },
+      },
+      include: {
+        participants: true,
+        owner: true,
+        submits: true,
       },
     })
   }

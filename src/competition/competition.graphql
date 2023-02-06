@@ -32,13 +32,21 @@ type Competition {
   """
   isOpen: Boolean!
   """
-  作成日
-  """
-  createdAt: DateTime!
-  """
   オーナー
   """
   owner: User!
+  """
+  オーナーID
+  """
+  ownerId: ID
+  """
+  参加者一覧
+  """
+  participants: [User]!
+  """
+  作成日
+  """
+  createdAt: DateTime!
   """
   更新日
   """
@@ -89,6 +97,10 @@ input UpdateCompetitionInput {
   終了日
   """
   endDate: Date
+  """
+  参加者ID一覧
+  """
+  participantsId: [ID]
 }
 
 type Query {
@@ -115,4 +127,8 @@ type Mutation {
   コンペ削除
   """
   removeCompetition(id: Int!): Competition
+  """
+  参加者を追加
+  """
+  addParticipant(id: Int!, userId: ID!): Competition
 }

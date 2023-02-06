@@ -1,29 +1,31 @@
-import {
-  Resolver,
-  Query,
-  Mutation,
-  Args,
-  Context,
-  GqlContextType,
-  ResolveField,
-} from '@nestjs/graphql'
+import { Resolver, Query, Mutation, Args, ResolveField, Parent } from '@nestjs/graphql'
 import { CompetitionService } from './competition.service'
-import { CreateCompetitionInput, UpdateCompetitionInput, User } from 'src/types/graphql'
+import {
+  Competition,
+  CreateCompetitionInput,
+  UpdateCompetitionInput,
+  User,
+} from 'src/types/graphql'
+import { UseGuards } from '@nestjs/common'
+import { NextAuthGuard } from 'src/utils/NextAuthGuard'
+import { CtxUser } from 'src/user/User'
 
 @Resolver('Competition')
 export class CompetitionResolver {
   constructor(private readonly competitionService: CompetitionService) {}
 
   @Mutation('createCompetition')
+  @UseGuards(NextAuthGuard)
   create(
     @Args('createCompetitionInput')
     createCompetitionInput: CreateCompetitionInput,
-    @Context() ctx: User,
+    @CtxUser() user: User,
   ) {
-    return this.competitionService.create(createCompetitionInput, ctx)
+    return this.competitionService.create(createCompetitionInput, user)
   }
 
-  @Query('competition')
+  @Query('competitions')
+  @UseGuards(NextAuthGuard)
   findAll() {
     return this.competitionService.findAll()
   }
@@ -43,13 +45,19 @@ export class CompetitionResolver {
   }
 
   @Mutation('removeCompetition')
-  remove(@Args('id') id: number) {
-    return this.competitionService.remove(id)
+  @UseGuards(NextAuthGuard)
+  remove(@Args('id') id: number, @CtxUser() user: User) {
+    return this.competitionService.remove(id, user)
+  }
+
+  @Mutation('addParticipant')
+  @UseGuards(NextAuthGuard)
+  addParticipant(@Args('id') id: number, @Args('userId') userId: string) {
+    return this.competitionService.addParticipant(id, userId)
   }
 
   @ResolveField('isOpen', () => Boolean)
-  async isOpen(@Args('id') id: number) {
-    const competition = await this.competitionService.findOne(id)
+  async isOpen(@Parent() competition: Competition) {
     const { startDate, endDate } = competition
     const now = new Date()
     return startDate <= now && now <= endDate
