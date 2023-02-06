@@ -11,38 +11,38 @@
 export class CreateCompetitionInput {
     title: string;
     description: string;
-    image?: Nullable<string>;
-    startDate: DateTime;
-    endDate: DateTime;
+    image?: Nullable<URL>;
+    startDate: Date;
+    endDate: Date;
 }
 
 export class UpdateCompetitionInput {
     title?: Nullable<string>;
     description?: Nullable<string>;
-    image?: Nullable<string>;
-    startDate?: Nullable<DateTime>;
-    endDate?: Nullable<DateTime>;
+    image?: Nullable<URL>;
+    startDate?: Nullable<Date>;
+    endDate?: Nullable<Date>;
 }
 
 export class CreateUserInput {
     name: string;
-    email: string;
-    image?: Nullable<string>;
+    email: EmailAddress;
+    image?: Nullable<URL>;
 }
 
 export class UpdateUserInput {
     name?: Nullable<string>;
     email?: Nullable<string>;
-    image?: Nullable<string>;
+    image?: Nullable<URL>;
 }
 
 export class Competition {
     id: number;
     title: string;
     description: string;
-    image?: Nullable<string>;
-    startDate: DateTime;
-    endDate: DateTime;
+    image?: Nullable<URL>;
+    startDate: Date;
+    endDate: Date;
     isOpen: boolean;
     createdAt: DateTime;
     owner: User;
@@ -78,12 +78,14 @@ export abstract class IMutation {
 export class User {
     id: string;
     name: string;
-    email: string;
-    image?: Nullable<string>;
+    email: EmailAddress;
+    image?: Nullable<URL>;
     createdAt: DateTime;
     updatedAt: DateTime;
     OK: boolean;
 }
 
 export type DateTime = any;
+export type URL = any;
+export type EmailAddress = any;
 type Nullable<T> = T | null;

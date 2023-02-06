@@ -1,4 +1,6 @@
 scalar DateTime
+scalar EmailAddress
+scalar URL
 
 type User {
   """
@@ -12,11 +14,11 @@ type User {
   """
   メールアドレス
   """
-  email: String!
+  email: EmailAddress!
   """
   プロフィール画像URL
   """
-  image: String
+  image: URL
   """
   作成日時
   """
@@ -36,11 +38,11 @@ input CreateUserInput {
   """
   メールアドレス
   """
-  email: String!
+  email: EmailAddress!
   """
   プロフィール画像URL
   """
-  image: String
+  image: URL
 }
 
 input UpdateUserInput {
@@ -55,7 +57,7 @@ input UpdateUserInput {
   """
   プロフィール画像URL
   """
-  image: String
+  image: URL
 }
 
 type Query {

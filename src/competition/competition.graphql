@@ -1,5 +1,7 @@
 scalar DateTime
 scalar Date
+scalar URL
+
 type Competition {
   """
   コンペID
@@ -16,15 +18,15 @@ type Competition {
   """
   画像
   """
-  image: String
+  image: URL
   """
   開始日
   """
-  startDate: DateTime!
+  startDate: Date!
   """
   終了日
   """
-  endDate: DateTime!
+  endDate: Date!
   """
   公開中かどうか
   """
@@ -55,15 +57,15 @@ input CreateCompetitionInput {
   """
   画像
   """
-  image: String
+  image: URL
   """
   開始日
   """
-  startDate: DateTime!
+  startDate: Date!
   """
   終了日
   """
-  endDate: DateTime!
+  endDate: Date!
 }
 
 input UpdateCompetitionInput {
@@ -78,15 +80,15 @@ input UpdateCompetitionInput {
   """
   画像
   """
-  image: String
+  image: URL
   """
   開始日
   """
-  startDate: DateTime
+  startDate: Date
   """
   終了日
   """
-  endDate: DateTime
+  endDate: Date
 }
 
 type Query {
@@ -104,16 +106,11 @@ type Mutation {
   """
   コンペ作成
   """
-  createCompetition(
-    createCompetitionInput: CreateCompetitionInput!
-  ): Competition!
+  createCompetition(createCompetitionInput: CreateCompetitionInput!): Competition!
   """
   コンペ更新
   """
-  updateCompetition(
-    id: Int!
-    updateCompetitionInput: UpdateCompetitionInput!
-  ): Competition!
+  updateCompetition(id: Int!, updateCompetitionInput: UpdateCompetitionInput!): Competition!
   """
   コンペ削除
   """

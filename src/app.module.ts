@@ -6,7 +6,7 @@ import { PrismaService } from './prisma/prisma.service'
 import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core'
 import { PrismaModule } from './prisma/prisma.module'
 import { UserModule } from './user/user.module'
-import { DateTimeResolver } from 'graphql-scalars'
+import { DateTimeResolver, EmailAddressResolver, URLResolver } from 'graphql-scalars'
 import { CompetitionModule } from './competition/competition.module'
 import { Raw, Request } from '@node-libraries/nest-apollo-server'
 import { decode } from 'next-auth/jwt'
@@ -23,7 +23,11 @@ import { decode } from 'next-auth/jwt'
         path: join(process.cwd(), 'src/types/graphql.ts'),
         outputAs: 'class',
       },
-      resolvers: { DateTime: DateTimeResolver },
+      resolvers: {
+        DateTime: DateTimeResolver,
+        EmailAddress: EmailAddressResolver,
+        URL: URLResolver,
+      },
       context: async ({ req }: { req: Request }) => {
         try {
           const r = Raw(req)
