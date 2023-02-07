@@ -40,8 +40,9 @@ export class CompetitionService {
     })
   }
 
-  findOne(id: number) {
-    return this.prisma.competition.findUnique({
+  async findOne(id: string, user: User) {
+    console.log('user', user)
+    const compe = await this.prisma.competition.findUnique({
       where: {
         id,
       },
@@ -51,9 +52,33 @@ export class CompetitionService {
         submits: true,
       },
     })
+    if (compe.participants.some((p) => p.id === user.id)) {
+      return compe
+    } else {
+      throw new Error('参加者以外は見れません')
+    }
   }
 
-  update(id: number, updateCompetitionInput: UpdateCompetitionInput) {
+  findMyCompetitions(id: string, offset?: number, limit?: number) {
+    return this.prisma.competition.findMany({
+      take: limit || undefined,
+      skip: offset || undefined,
+      where: {
+        participants: {
+          some: {
+            id,
+          },
+        },
+      },
+      include: {
+        participants: true,
+        owner: true,
+        submits: true,
+      },
+    })
+  }
+
+  update(id: string, updateCompetitionInput: UpdateCompetitionInput) {
     return this.prisma.competition.update({
       where: {
         id,
@@ -69,7 +94,7 @@ export class CompetitionService {
     })
   }
 
-  async remove(id: number, user: User) {
+  async remove(id: string, user: User) {
     const competition = await this.prisma.competition.findUnique({
       where: {
         id,
@@ -85,7 +110,7 @@ export class CompetitionService {
     })
   }
 
-  addParticipant(id: number, userId: string) {
+  addParticipant(id: string, userId: string) {
     return this.prisma.competition.update({
       where: {
         id,

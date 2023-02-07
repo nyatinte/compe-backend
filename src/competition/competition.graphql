@@ -6,7 +6,7 @@ type Competition {
   """
   コンペID
   """
-  id: Int!
+  id: ID!
   """
   タイトル
   """
@@ -111,7 +111,7 @@ type Query {
   """
   コンペ詳細
   """
-  competition(id: Int!): Competition
+  competition(id: ID!): Competition
 }
 
 type Mutation {
@@ -122,13 +122,13 @@ type Mutation {
   """
   コンペ更新
   """
-  updateCompetition(id: Int!, updateCompetitionInput: UpdateCompetitionInput!): Competition!
+  updateCompetition(id: ID!, updateCompetitionInput: UpdateCompetitionInput!): Competition!
   """
   コンペ削除
   """
-  removeCompetition(id: Int!): Competition
+  removeCompetition(id: ID!): Competition
   """
   参加者を追加
   """
-  addParticipant(id: Int!, userId: ID!): Competition
+  addParticipant(id: ID!, userId: ID!): Competition
 }

@@ -20,6 +20,21 @@ type User {
   """
   image: URL
   """
+  参加しているコンペティション
+  """
+  # ページネーションを実装
+  competitions(
+    """
+    オフセット
+    """
+    offset: Int
+    """
+    リミット
+    """
+    limit: Int
+  ): [Competition!]!
+
+  """
   作成日時
   """
   createdAt: DateTime!

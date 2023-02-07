@@ -31,13 +31,13 @@ export class CompetitionResolver {
   }
 
   @Query('competition')
-  findOne(@Args('id') id: number) {
-    return this.competitionService.findOne(id)
+  findOne(@Args('id') id: string, @CtxUser() user: User) {
+    return this.competitionService.findOne(id, user)
   }
 
   @Mutation('updateCompetition')
   update(
-    @Args('id') id: number,
+    @Args('id') id: string,
     @Args('updateCompetitionInput')
     updateCompetitionInput: UpdateCompetitionInput,
   ) {
@@ -46,13 +46,13 @@ export class CompetitionResolver {
 
   @Mutation('removeCompetition')
   @UseGuards(NextAuthGuard)
-  remove(@Args('id') id: number, @CtxUser() user: User) {
+  remove(@Args('id') id: string, @CtxUser() user: User) {
     return this.competitionService.remove(id, user)
   }
 
   @Mutation('addParticipant')
   @UseGuards(NextAuthGuard)
-  addParticipant(@Args('id') id: number, @Args('userId') userId: string) {
+  addParticipant(@Args('id') id: string, @Args('userId') userId: string) {
     return this.competitionService.addParticipant(id, userId)
   }
 

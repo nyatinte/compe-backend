@@ -24,7 +24,7 @@ model User {
 }
 
 model Competition {
-  id          Int      @id @default(autoincrement())
+  id          String   @id @default(cuid())
   title       String
   description String
   image       String?
@@ -40,7 +40,7 @@ model Competition {
 }
 
 model Submit {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(cuid())
   source    String?
   score     Float
   note      String?
@@ -48,7 +48,7 @@ model Submit {
   updatedAt DateTime @updatedAt
 
   competition   Competition @relation(fields: [competitionId], references: [id])
-  competitionId Int
+  competitionId String
   author        User        @relation(fields: [authorId], references: [id])
   authorId      String
 }

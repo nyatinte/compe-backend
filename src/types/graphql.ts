@@ -38,7 +38,7 @@ export class UpdateUserInput {
 }
 
 export class Competition {
-    id: number;
+    id: string;
     title: string;
     description: string;
     image?: Nullable<URL>;
@@ -55,7 +55,7 @@ export class Competition {
 export abstract class IQuery {
     abstract competitions(): Nullable<Competition>[] | Promise<Nullable<Competition>[]>;
 
-    abstract competition(id: number): Nullable<Competition> | Promise<Nullable<Competition>>;
+    abstract competition(id: string): Nullable<Competition> | Promise<Nullable<Competition>>;
 
     abstract users(): Nullable<User>[] | Promise<Nullable<User>[]>;
 
@@ -65,11 +65,11 @@ export abstract class IQuery {
 export abstract class IMutation {
     abstract createCompetition(createCompetitionInput: CreateCompetitionInput): Competition | Promise<Competition>;
 
-    abstract updateCompetition(id: number, updateCompetitionInput: UpdateCompetitionInput): Competition | Promise<Competition>;
+    abstract updateCompetition(id: string, updateCompetitionInput: UpdateCompetitionInput): Competition | Promise<Competition>;
 
-    abstract removeCompetition(id: number): Nullable<Competition> | Promise<Nullable<Competition>>;
+    abstract removeCompetition(id: string): Nullable<Competition> | Promise<Nullable<Competition>>;
 
-    abstract addParticipant(id: number, userId: string): Nullable<Competition> | Promise<Nullable<Competition>>;
+    abstract addParticipant(id: string, userId: string): Nullable<Competition> | Promise<Nullable<Competition>>;
 
     abstract createUser(createUserInput: CreateUserInput): User | Promise<User>;
 
@@ -85,6 +85,7 @@ export class User {
     name: string;
     email: EmailAddress;
     image?: Nullable<URL>;
+    competitions: Competition[];
     createdAt: DateTime;
     updatedAt: DateTime;
     OK: boolean;
