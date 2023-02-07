@@ -1,12 +1,16 @@
 import { Resolver, Query, Mutation, Args, ResolveField, Parent } from '@nestjs/graphql'
 import { UserService } from './user.service'
-import { CreateUserInput, UpdateUserInput, User } from 'src/types/graphql'
+import { Competition, CreateUserInput, UpdateUserInput, User } from 'src/types/graphql'
 import { UseGuards } from '@nestjs/common'
 import { NextAuthGuard } from 'src/utils/NextAuthGuard'
+import { CompetitionService } from 'src/competition/competition.service'
 
 @Resolver('User')
 export class UserResolver {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly competitionService: CompetitionService,
+  ) {}
 
   @Mutation('createUser')
   create(@Args('createUserInput') createUserInput: CreateUserInput) {
@@ -25,7 +29,6 @@ export class UserResolver {
   }
 
   @Query('user')
-  @UseGuards(NextAuthGuard)
   findOne(@Args('id') id: string) {
     return this.userService.findOne(id)
   }
@@ -40,6 +43,16 @@ export class UserResolver {
   @UseGuards(NextAuthGuard)
   remove(@Args('id') id: string) {
     return this.userService.remove(id)
+  }
+
+  @ResolveField('competitions', () => Competition)
+  async competitions(
+    @Parent() user: User,
+    @Args('offset') offset?: number,
+    @Args('limit') limit?: number,
+  ) {
+    const { id } = user
+    return this.competitionService.findMyCompetitions(id, offset, limit)
   }
 
   @ResolveField('OK', () => Boolean)
